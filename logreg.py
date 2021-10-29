@@ -2,14 +2,14 @@
 """
 Created on Wed Jul 21 11:09:20 2021
 
-@author: utku
+@author: ankokkk
 """
 """
-#Train her epoch için 8dk, predict ise 2dk sürüyor. 
-#Bu sebeple pure-python kısımları comment içinde. 
-Sadece matmul kullanarak hızı yaklaşık 20(26sec per epoch) katına çıkarıyorum.
+#The code runs rather slow as no library is used for matrix multiplication. 
+#For this reason, I added the matmul function to the marked places.
+#If you want, you can activate the comment line and run the code without using matmul.
 """
-#***W değerini 10'a böldüm her bir sınıf için ayrı ayrı güncelledim. Yavaş ama daha kolay debug edilebilir oldu.
+
 
 import numpy as np
 import random
@@ -91,7 +91,7 @@ class LogisticRegression:
           for i in range(X.shape[0]):
               dist0 = [0]*10
               
-              #Hız için np.malmut
+              #For work faster np.malmut
               """
               for k in range(784):#Matrix Mult
                   dist0[0] += X[i][k]*self.w0[k]
@@ -177,7 +177,7 @@ class LogisticRegression:
             E = [0]*10
             yi = int(y)
             E[yi] = 1 
-            #Hız için np.matmul ********
+            #For work faster np.matmul ********
             pred[0] = np.matmul(self.w0, x)
             pred[1] = np.matmul(self.w1, x)
             pred[2] = np.matmul(self.w2, x)
@@ -214,7 +214,7 @@ class LogisticRegression:
                 b_grad[i] = ((-(E[i] - pred[i])))
                 b_gradl[i] += b_grad[i]   
             #Gradient calculating
-            #Hız için np.matmul****************
+            #For work faster np.matmul****************
             w_grad0 = -np.matmul(w_grad[0],x.reshape((1,784)))
             w_gradl0 += w_grad0
             w_grad1 = -np.matmul(w_grad[1],x.reshape((1,784)))
@@ -258,7 +258,7 @@ class LogisticRegression:
                w_grad9[i] = -(w_grad[9]*x[i]) 
                w_gradl9[i] += w_grad9[i]
            """
-        #np.matmul sonucuna uygun olduğu için hız kattı. Normalde böyle hatalı olur doğrusu aşağıda comment içinde.******   
+        #np.matmul work faster. If you activate the part in the comment, it will work without matmul.******   
         dw0 = (w_gradl0/self.batch_size)
         dw1 = (w_gradl1/self.batch_size)
         dw2 = (w_gradl2/self.batch_size)
@@ -294,7 +294,7 @@ class LogisticRegression:
         return n * ((x ** (1/n)) - 1)
     
     def Softmax(self, z):
-        #np.malmut durumu için exp scalar bu sebeple ekleme yaptım.
+        #np.malmut situation for exp scalar so i added.
         prob = [0]*10
         exp = [0]*10
         e = 2.718
